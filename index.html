@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longzz SMM Digital Shop - Followers Receipt</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e1b4b, #312e81);
+            color: #ffffff;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            padding: 25px;
+        }
+        .header-title {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #60a5fa, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .input-group {
+            margin-bottom: 16px;
+        }
+        .input-group label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+        .input-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .input-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+            width: 100%;
+            color: #ffffff;
+        }
+        .input-box input::placeholder {
+            color: #64748b;
+        }
+        .action-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 14px;
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        }
+        /* ផ្នែកលទ្ធផលដែលលោតចេញមកបែបព្រិលៗ (Glassmorphism Blur Result) */
+        .result-card {
+            display: none;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: fadeIn 0.5s ease;
+        }
+        .result-card.active {
+            display: block;
+        }
+        .result-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+        .result-item {
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+        }
+        .result-item span {
+            font-weight: 700;
+            color: #c084fc;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 10px;
+            color: #64748b;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer span { font-weight: 700; color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-title">ប្រព័ន្ធរៀបចំ Followers</div>
+
+        <div class="input-group">
+            <label>Name Facebook</label>
+            <div class="input-box">
+                <input type="text" id="fbName" placeholder="បញ្ចូលឈ្មោះហ្វេសប៊ុក...">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Total boost followers</label>
+            <div class="input-box">
+                <input type="number" id="boostTotal" placeholder="ចំនួន Follower ທີ່ចង់ប៊ូស...">
+            </div>
+        </div>
+
+        <button class="action-btn" onclick="generateReceipt()">បង្កើតប្រវត្តិបត្រ</button>
+
+        <!-- ផ្នែកបង្ហាញលទ្ធផលព្រិលៗ (Result Receipt) -->
+        <div id="resultCard" class="result-card">
+            <div class="result-title">✨ លទ្ធផលប្រវត្តិបត្របង្កើតជោគជ័យ ✨</div>
+            <div class="result-item">Facebookname : <span id="resName">-</span></div>
+            <div class="result-item">Balanc stock : <span id="resStock">-</span></div>
+        </div>
+
+        <div class="footer">
+            <span>KHMER TVER BAN</span>
+            <span>ESP : SEAV LONG GROUP ©2026</span>
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function generateReceipt() {
+            let name = document.getElementById('fbName').value.trim();
+            let total = document.getElementById('boostTotal').value.trim();
+
+            if (!name || !total) {
+                alert("សូមបំពេញព័ត៌មាន Name Facebook និង Total boost followers ឱ្យបានครบถ้วน!");
+                return;
+            }
+
+            // បង្ហាញទិន្នន័យចូលក្នុង Card លទ្ធផល
+            document.getElementById('resName').innerText = name;
+            document.getElementById('resStock').innerText = total + " Followers";
+
+            // បង្ហាញ Card លទ្ធផលបែបព្រិលៗ
+            document.getElementById('resultCard').classList.add('active');
+
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+        }
+    </script>
+</body>
+</html>
