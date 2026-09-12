@@ -22,8 +22,8 @@
             width: 100%;
             max-width: 400px;
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -91,41 +91,45 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
         }
-        /* ផ្នែកលទ្ធផលដែលលោតចេញមកបែបព្រិលៗ (Glassmorphism Blur Result) */
+        /* ផ្នែកលទ្ធផលព្រិលខ្លាំង (Heavy Blur & Glassmorphism) */
         .result-card {
             display: none;
             margin-top: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(15, 23, 42, 0.45); /* ធ្វើឱ្យដិតបន្តិចដើម្បីឱ្យកន្លែងព្រិលេចច្បាស់ */
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
             border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.4);
             animation: fadeIn 0.5s ease;
         }
         .result-card.active {
             display: block;
         }
         .result-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
-            color: #38bdf8;
+            background: linear-gradient(90deg, #38bdf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 12px;
             text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             padding-bottom: 8px;
+            text-transform: uppercase;
         }
         .result-item {
             font-size: 13px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: #f1f5f9;
             display: flex;
             justify-content: space-between;
+            font-weight: 600;
         }
         .result-item span {
-            font-weight: 700;
-            color: #c084fc;
+            font-weight: 800;
+            color: #38bdf8;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -165,9 +169,9 @@
 
         <button class="action-btn" onclick="generateReceipt()">បង្កើតប្រវត្តិបត្រ</button>
 
-        <!-- ផ្នែកបង្ហាញលទ្ធផលព្រិលៗ (Result Receipt) -->
+        <!-- ផ្នែកបង្ហាញលទ្ធផលព្រិលខ្លាំង -->
         <div id="resultCard" class="result-card">
-            <div class="result-title">✨ លទ្ធផលប្រវត្តិបត្របង្កើតជោគជ័យ ✨</div>
+            <div class="result-title">✨ ប្រវត្តិបត្របង្កើតជោគជ័យ ✨</div>
             <div class="result-item">Facebookname : <span id="resName">-</span></div>
             <div class="result-item">Balanc stock : <span id="resStock">-</span></div>
         </div>
@@ -187,15 +191,13 @@
             let total = document.getElementById('boostTotal').value.trim();
 
             if (!name || !total) {
-                alert("សូមបំពេញព័ត៌មាន Name Facebook និង Total boost followers ឱ្យបានครบถ้วน!");
+                alert("សូមបំពេញព័ត៌មាន Name Facebook និង Total boost followers ឱ្យបានពេញលេញ!");
                 return;
             }
 
-            // បង្ហាញទិន្នន័យចូលក្នុង Card លទ្ធផល
             document.getElementById('resName').innerText = name;
             document.getElementById('resStock').innerText = total + " Followers";
 
-            // បង្ហាញ Card លទ្ធផលបែបព្រិលៗ
             document.getElementById('resultCard').classList.add('active');
 
             if (tg.HapticFeedback) {
