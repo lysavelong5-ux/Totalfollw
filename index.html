@@ -91,11 +91,10 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
         }
-        /* ផ្នែកលទ្ធផលព្រិលខ្លាំង (Heavy Blur & Glassmorphism) */
         .result-card {
             display: none;
             margin-top: 20px;
-            background: rgba(15, 23, 42, 0.45); /* ធ្វើឱ្យដិតបន្តិចដើម្បីឱ្យកន្លែងព្រិលេចច្បាស់ */
+            background: rgba(15, 23, 42, 0.45);
             backdrop-filter: blur(35px);
             -webkit-backdrop-filter: blur(35px);
             border: 1.5px solid rgba(255, 255, 255, 0.25);
@@ -169,7 +168,6 @@
 
         <button class="action-btn" onclick="generateReceipt()">បង្កើតប្រវត្តិបត្រ</button>
 
-        <!-- ផ្នែកបង្ហាញលទ្ធផលព្រិលខ្លាំង -->
         <div id="resultCard" class="result-card">
             <div class="result-title">✨ ប្រវត្តិបត្របង្កើតជោគជ័យ ✨</div>
             <div class="result-item">Facebookname : <span id="resName">-</span></div>
@@ -186,17 +184,31 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
+        // មុខងារបម្លែងលេខរៀងចាប់ពី 1000 ឡើងទៅឱ្យទៅជា K
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+            }
+            return num;
+        }
+
         function generateReceipt() {
             let name = document.getElementById('fbName').value.trim();
-            let total = document.getElementById('boostTotal').value.trim();
+            let total = parseInt(document.getElementById('boostTotal').value);
 
-            if (!name || !total) {
-                alert("សូមបំពេញព័ត៌មាន Name Facebook និង Total boost followers ឱ្យបានពេញលេញ!");
+            if (!name || isNaN(total)) {
+                alert("សូមបំពេញព័ត៌មាន Name Facebook និង Total boost followers ឱ្យបានត្រឹមត្រូវ!");
                 return;
             }
 
+            // ហៅមុខងារ formatNumber ដើម្បីបម្លែងលេខ
+            let formattedStock = formatNumber(total) + " Followers";
+
             document.getElementById('resName').innerText = name;
-            document.getElementById('resStock').innerText = total + " Followers";
+            document.getElementById('resStock').innerText = formattedStock;
 
             document.getElementById('resultCard').classList.add('active');
 
